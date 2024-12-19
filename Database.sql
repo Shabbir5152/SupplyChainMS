@@ -8,7 +8,7 @@ CREATE TABLE Orders (
     DeliveryDate DATE,
     Status ENUM('Pending', 'In Progress', 'Delivered') DEFAULT 'Pending',
     WarehouseID INT NOT NULL,
-    FOREIGN KEY (WarehouseID) REFERENCES Warehouses(WarehouseID)
+    FOREIGN KEY (WarehouseID) REFERENCES Warehouses(WarehouseID) ON DELETE CASCADE
 );
 
 CREATE TABLE Inventory (
@@ -17,8 +17,8 @@ CREATE TABLE Inventory (
     ProductID INT NOT NULL,
     Stock INT CHECK (Stock >= 0),
     LowStockThreshold INT DEFAULT 5,
-    FOREIGN KEY (WarehouseID) REFERENCES Warehouses(WarehouseID),
-    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+    FOREIGN KEY (WarehouseID) REFERENCES Warehouses(WarehouseID) ON DELETE CASCADE,
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID) ON DELETE CASCADE
 );
 
 CREATE TABLE Products (
@@ -27,7 +27,7 @@ CREATE TABLE Products (
     Category VARCHAR(50),
     Price DECIMAL(10, 2),
     SupplierID INT,
-    FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID)
+    FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID) ON DELETE CASCADE
 );
 
 CREATE TABLE Suppliers (
@@ -158,6 +158,8 @@ VALUES
 (301, 'North Warehouse', 'Chicago', 50),
 (410, 'South Warehouse', 'Dallas', 75);
 
+UPDATE Warehouses SET Name = '9th Avenue', Location = 'Florida', Capacity = 150 WHERE WarehouseID = 242;
+
 INSERT INTO Inventory (WarehouseID, ProductID, Stock, LowStockThreshold)
 VALUES 
 (242, 1, 50, 10),
@@ -191,3 +193,7 @@ TRUNCATE Table products;
 TRUNCATE Table inventory;
 TRUNCATE Table alerts;
 set FOREIGN_KEY_CHECKS = 1;
+
+SET SQL_SAFE_UPDATES = 0;
+DELETE FROM warehouses WHERE WarehouseID = 106;
+SET SQL_SAFE_UPDATES = 1;
