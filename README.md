@@ -6,5 +6,7 @@ Developed a comprehensive Supply Chain Management System to streamline logistics
 Tech Stack
 
 ● Frontend: React.js, Tailwind CSS
+
 ● Backend: Node.js, Express.js, Postman RESTful APIs
+
 ● Database: MySQL
